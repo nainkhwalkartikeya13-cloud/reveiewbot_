@@ -2,7 +2,6 @@ import type {
     ParsedDiff,
     ChunkExtractionResult,
     PRReviewStats,
-    FilePriority,
 } from '../types/diff.types';
 
 // ─── Complexity thresholds ──────────────────────────────────────────────

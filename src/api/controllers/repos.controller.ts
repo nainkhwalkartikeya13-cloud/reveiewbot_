@@ -31,9 +31,9 @@ export async function updateRepoConfig(req: Request, res: Response): Promise<voi
     }
 
     try {
-        const repo = await repositoryRepo.updateConfig(id!, validation.config!);
+        const repo = await repositoryRepo.updateConfig(id, validation.config!);
         res.json({ repo });
-    } catch (error) {
+    } catch {
         res.status(404).json({ error: 'Repository not found' });
     }
 }
@@ -53,7 +53,7 @@ export async function toggleRepo(req: Request, res: Response): Promise<void> {
     try {
         const repo = await repositoryRepo.setActive(id, isActive);
         res.json({ repo });
-    } catch (error) {
+    } catch {
         res.status(404).json({ error: 'Repository not found' });
     }
 }

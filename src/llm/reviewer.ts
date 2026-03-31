@@ -1,4 +1,4 @@
-import { callGrok, type CallLLMResult } from './client';
+import { callGrok } from './client';
 import { getSystemPrompt, buildReviewPrompt, buildRepairPrompt, type PRContext, type RepoReviewConfig } from './prompts';
 import type { ReviewableChunk } from '../types/diff.types';
 import type { LLMReviewResponse, ReviewIssue } from '../types/review.types';
@@ -190,6 +190,7 @@ export async function reviewFiles(
             oldStartLine: h.oldStart,
             oldEndLine: h.oldStart + h.oldLines - 1,
             lines: h.content.split('\n').map((line, idx) => ({
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
                 type: (line.startsWith('+') ? 'add' : line.startsWith('-') ? 'remove' : 'context') as 'add' | 'remove' | 'context',
                 lineNumber: h.newStart + idx,
                 oldLineNumber: line.startsWith('+') ? null : h.oldStart + idx,

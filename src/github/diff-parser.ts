@@ -5,7 +5,6 @@ import type {
     DiffFile,
     ParsedDiff,
     FileStatus,
-    LineType,
 } from '../types/diff.types';
 
 // ─── Language detection ─────────────────────────────────────────────────

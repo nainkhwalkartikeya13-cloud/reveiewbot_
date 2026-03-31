@@ -125,7 +125,7 @@ class ReviewService {
                 const reviewComments = filteredComments.map((c) => ({
                     path: c.path,
                     line: c.line,
-                    side: c.side as 'LEFT' | 'RIGHT',
+                    side: c.side,
                     body: c.body,
                 }));
                 await postReviewComments(

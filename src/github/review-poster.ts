@@ -38,12 +38,6 @@ const VERDICT_BADGE: Record<Verdict, string> = {
     comment: '💬 **Reviewed**',
 };
 
-const VERDICT_MAP: Record<Verdict, 'APPROVE' | 'REQUEST_CHANGES' | 'COMMENT'> = {
-    approve: 'APPROVE',
-    request_changes: 'REQUEST_CHANGES',
-    comment: 'COMMENT',
-};
-
 // ═══════════════════════════════════════════════════════════════════════
 // 1. Post inline review comments
 // ═══════════════════════════════════════════════════════════════════════

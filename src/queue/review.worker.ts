@@ -35,7 +35,7 @@ interface ReviewEngineResult {
  *
  * In production, this calls src/llm/reviewer.ts → reviewFiles()
  */
-async function runReviewEngine(
+function runReviewEngine(
     _diff: string,
     _files: Array<{ filename: string; status: string; patch: string }>,
     _metadata: PRMetadata,
@@ -47,13 +47,12 @@ async function runReviewEngine(
     //   const result = await reviewFiles(fileDiffs, metadata.title, metadata.body, language);
     //   return { summary: result.summary, comments: result.comments as ReviewComment[], ... };
     // ──────────────────────────────────────────────────────────────────
-
-    return {
+    return Promise.resolve({
         summary: '🤖 AXD reviewed this PR. LLM engine not yet connected — this is a test review.',
         comments: [],
         promptTokens: 0,
         completionTokens: 0,
-    };
+    });
 }
 
 // ─── Job processor ──────────────────────────────────────────────────────

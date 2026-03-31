@@ -28,7 +28,7 @@ export function getGitHubApp(): OctokitApp {
  * Create an Octokit instance authenticated as a specific installation.
  * Uses @octokit/auth-app which handles token caching and refresh.
  */
-export async function getInstallationOctokit(installationId: number): Promise<Octokit> {
+export function getInstallationOctokit(installationId: number): Promise<Octokit> {
     const privateKey = env.GITHUB_APP_PRIVATE_KEY.replace(/\\n/g, '\n');
 
     const octokit = new Octokit({
@@ -41,7 +41,7 @@ export async function getInstallationOctokit(installationId: number): Promise<Oc
     });
 
     logger.debug({ installationId }, 'Created installation Octokit');
-    return octokit;
+    return Promise.resolve(octokit);
 }
 
 // ─── PR data fetching ───────────────────────────────────────────────────

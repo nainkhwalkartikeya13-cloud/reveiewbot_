@@ -16,7 +16,7 @@ const CHARS_PER_TOKEN = 3.5;
 const MAX_CHUNK_TOKENS = 80_000;
 
 /** Max lines to include in a single chunk (safety bound) */
-const MAX_CHUNK_LINES = 3000;
+// const MAX_CHUNK_LINES = 3000;
 
 // ─── Skip patterns ─────────────────────────────────────────────────────
 

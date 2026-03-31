@@ -10,7 +10,7 @@ import { closeReviewQueue } from './queue/review.queue';
 import { closeRedis } from './config/redis';
 import { prisma } from './db/client';
 
-async function main() {
+function main() {
     const app = express();
 
     // ─── Security headers ─────────────────────────────────────────────
@@ -86,7 +86,9 @@ async function main() {
     });
 }
 
-main().catch((err) => {
+try {
+    main();
+} catch (err) {
     logger.fatal({ err }, 'Failed to start');
     process.exit(1);
-});
+}
