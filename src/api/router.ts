@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { healthCheck } from './controllers/health.controller';
-import { listRepos, updateRepoConfig, toggleRepo } from './controllers/repos.controller';
-import { listReviews, getReview } from './controllers/reviews.controller';
-import { submitFeedback, getFeedbackStats } from './controllers/feedback.controller';
-import { authMiddleware } from './middleware/auth';
-import { apiRateLimiter } from './middleware/rateLimit';
+import { healthCheck } from './controllers/health.controller.js';
+import { listRepos, updateRepoConfig, toggleRepo } from './controllers/repos.controller.js';
+import { listReviews, getReview } from './controllers/reviews.controller.js';
+import { submitFeedback, getFeedbackStats } from './controllers/feedback.controller.js';
+import { authMiddleware } from './middleware/auth.js';
+import { apiRateLimiter } from './middleware/rateLimit.js';
 
 const router = Router();
 

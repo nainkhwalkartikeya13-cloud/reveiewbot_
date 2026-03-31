@@ -1,4 +1,4 @@
-import { parseLLMResponse, LLMParseError } from '../../../src/llm/parser';
+import { parseLLMResponse, LLMParseError } from '../../../src/llm/parser.js';
 
 const VALID_RESPONSE = {
     summary: 'Found 1 issue in authentication logic',

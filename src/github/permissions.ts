@@ -1,5 +1,5 @@
 import { Octokit } from '@octokit/rest';
-import { logger } from '../config/logger';
+import { logger } from '../config/logger.js';
 
 const REQUIRED_PERMISSIONS: Record<string, string> = {
     pull_requests: 'write',

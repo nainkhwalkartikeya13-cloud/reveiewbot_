@@ -1,5 +1,5 @@
-import { prisma } from '../db/client';
-import { logger } from '../config/logger';
+import { prisma } from '../db/client.js';
+import { logger } from '../config/logger.js';
 
 // Approximate pricing for Grok (per 1M tokens) — update as needed
 const PRICE_PER_1M_INPUT_TOKENS = 2.0;

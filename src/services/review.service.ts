@@ -1,14 +1,14 @@
-import { getInstallationOctokit } from '../github/app';
-import { fetchPRDiff, parseDiff, filterFiles } from '../github/diff';
-import { postReviewComments, postPRComment } from '../github/comments';
-import { reviewFiles } from '../llm/reviewer';
-import { reviewRepo } from '../db/repositories/review.repo';
-import { repositoryRepo } from '../db/repositories/repository.repo';
-import { configService } from './config.service';
-import { usageService } from './usage.service';
-import { env } from '../config/env';
-import { createChildLogger } from '../config/logger';
-import type { ReviewJobData, ReviewResult } from '../types/review.types';
+import { getInstallationOctokit } from '../github/app.js';
+import { fetchPRDiff, parseDiff, filterFiles } from '../github/diff.js';
+import { postReviewComments, postPRComment } from '../github/comments.js';
+import { reviewFiles } from '../llm/reviewer.js';
+import { reviewRepo } from '../db/repositories/review.repo.js';
+import { repositoryRepo } from '../db/repositories/repository.repo.js';
+import { configService } from './config.service.js';
+import { usageService } from './usage.service.js';
+import { env } from '../config/env.js';
+import { createChildLogger } from '../config/logger.js';
+import type { ReviewJobData, ReviewResult } from '../types/review.types.js';
 
 class ReviewService {
     /**
@@ -155,7 +155,7 @@ class ReviewService {
 
             // 12. Track usage
             const installationRecord = await (
-                await import('../db/repositories/installation.repo')
+                await import('../db/repositories/installation.repo.js')
             ).installationRepo.findByGithubId(jobData.installationId);
 
             if (installationRecord) {

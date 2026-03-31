@@ -1,10 +1,10 @@
-import { callGrok } from './client';
-import { getSystemPrompt, buildReviewPrompt, buildRepairPrompt, type PRContext, type RepoReviewConfig } from './prompts';
-import type { ReviewableChunk } from '../types/diff.types';
-import type { LLMReviewResponse, ReviewIssue } from '../types/review.types';
-import { issuesToComments } from '../types/review.types';
-import type { LLMComment } from '../types/review.types';
-import { logger } from '../config/logger';
+import { callGrok } from './client.js';
+import { getSystemPrompt, buildReviewPrompt, buildRepairPrompt, type PRContext, type RepoReviewConfig } from './prompts.js';
+import type { ReviewableChunk } from '../types/diff.types.js';
+import type { LLMReviewResponse, ReviewIssue } from '../types/review.types.js';
+import { issuesToComments } from '../types/review.types.js';
+import type { LLMComment } from '../types/review.types.js';
+import { logger } from '../config/logger.js';
 
 // ─── Public types ───────────────────────────────────────────────────────
 

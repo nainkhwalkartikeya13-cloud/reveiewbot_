@@ -1,8 +1,8 @@
 import { Worker, Job } from 'bullmq';
-import { REVIEW_QUEUE_NAME } from './review.queue';
-import { getRedisConnection } from '../config/redis';
-import { env } from '../config/env';
-import { logger, createChildLogger } from '../config/logger';
+import { REVIEW_QUEUE_NAME } from './review.queue.js';
+import { getRedisConnection } from '../config/redis.js';
+import { env } from '../config/env.js';
+import { logger, createChildLogger } from '../config/logger.js';
 import {
     getInstallationOctokit,
     fetchPRMetadata,
@@ -12,10 +12,10 @@ import {
     postIssueComment,
     type PRMetadata,
     type ReviewComment,
-} from '../github/app';
-import { reviewRepo } from '../db/repositories/review.repo';
-import { repositoryRepo } from '../db/repositories/repository.repo';
-import type { ReviewJobData } from '../types/review.types';
+} from '../github/app.js';
+import { reviewRepo } from '../db/repositories/review.repo.js';
+import { repositoryRepo } from '../db/repositories/repository.repo.js';
+import type { ReviewJobData } from '../types/review.types.js';
 
 let worker: Worker<ReviewJobData> | null = null;
 
@@ -43,7 +43,7 @@ function runReviewEngine(
 ): Promise<ReviewEngineResult> {
     // ──────────────────────────────────────────────────────────────────
     // Replace this with:
-    //   import { reviewFiles } from '../llm/reviewer';
+    //   import { reviewFiles } from '../llm/reviewer.js';
     //   const result = await reviewFiles(fileDiffs, metadata.title, metadata.body, language);
     //   return { summary: result.summary, comments: result.comments as ReviewComment[], ... };
     // ──────────────────────────────────────────────────────────────────

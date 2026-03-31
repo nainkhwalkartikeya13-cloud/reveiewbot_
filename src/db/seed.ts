@@ -1,5 +1,5 @@
-import { prisma } from './client';
-import { logger } from '../config/logger';
+import { prisma } from './client.js';
+import { logger } from '../config/logger.js';
 
 async function seed() {
     logger.info('Seeding database...');

@@ -1,7 +1,7 @@
 import { Queue } from 'bullmq';
-import { getRedisConnection } from '../config/redis';
-import { logger } from '../config/logger';
-import type { ReviewJobData } from '../types/review.types';
+import { getRedisConnection } from '../config/redis.js';
+import { logger } from '../config/logger.js';
+import type { ReviewJobData } from '../types/review.types.js';
 
 export const REVIEW_QUEUE_NAME = 'review-queue';
 

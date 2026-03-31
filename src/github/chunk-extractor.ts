@@ -1,11 +1,11 @@
-import { logger } from '../config/logger';
+import { logger } from '../config/logger.js';
 import type {
     DiffFile,
     ParsedDiff,
     FilePriority,
     ReviewableChunk,
     ChunkExtractionResult,
-} from '../types/diff.types';
+} from '../types/diff.types.js';
 
 // ─── Constants ──────────────────────────────────────────────────────────
 

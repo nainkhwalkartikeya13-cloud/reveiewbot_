@@ -1,4 +1,4 @@
-import type { ReviewableChunk } from '../types/diff.types';
+import type { ReviewableChunk } from '../types/diff.types.js';
 
 /**
  * PR metadata passed into the prompt builder.

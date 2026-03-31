@@ -1,6 +1,6 @@
-import { prisma } from '../client';
+import { prisma } from '../client.js';
 import type { Repository } from '@prisma/client';
-import type { RepoConfig } from '../../types/config.types';
+import type { RepoConfig } from '../../types/config.types.js';
 
 export class RepositoryRepo {
     async upsert(data: {

@@ -6,4 +6,4 @@ export {
     postReview as postReviewComments,
     postIssueComment as postPRComment,
     type ReviewComment,
-} from './app';
+} from './app.js';

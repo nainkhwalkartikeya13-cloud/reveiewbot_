@@ -1,4 +1,4 @@
-import { parseDiff, filterFiles } from '../../../src/github/diff';
+import { parseDiff, filterFiles } from '../../../src/github/diff.js';
 
 const SAMPLE_DIFF = `diff --git a/src/app.ts b/src/app.ts
 index abc1234..def5678 100644

@@ -1,12 +1,12 @@
 // This module's diff functionality has been consolidated into src/github/app.ts
 // Re-export for backward compatibility with any code that imports from here.
 
-export { fetchPRDiff } from './app';
+export { fetchPRDiff } from './app.js';
 
 // Keep the pure utility functions here since they don't depend on Octokit
 
-import { logger } from '../config/logger';
-import type { FileDiff, DiffHunk } from '../types/github.types';
+import { logger } from '../config/logger.js';
+import type { FileDiff, DiffHunk } from '../types/github.types.js';
 
 /**
  * Parse a unified diff string into per-file FileDiff objects.

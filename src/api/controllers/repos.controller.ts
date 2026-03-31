@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { repositoryRepo } from '../../db/repositories/repository.repo';
-import { configService } from '../../services/config.service';
+import { repositoryRepo } from '../../db/repositories/repository.repo.js';
+import { configService } from '../../services/config.service.js';
 
 /**
  * GET /api/repos — List repos for an installation.

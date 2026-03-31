@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
-import { logger } from '../config/logger';
-import type { LLMReviewResponse, ReviewIssue, IssueSeverity, Verdict } from '../types/review.types';
+import { logger } from '../config/logger.js';
+import type { LLMReviewResponse, ReviewIssue, IssueSeverity, Verdict } from '../types/review.types.js';
 
 // ─── Constants ──────────────────────────────────────────────────────────
 

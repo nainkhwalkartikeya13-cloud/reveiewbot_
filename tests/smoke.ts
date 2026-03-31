@@ -1,14 +1,14 @@
 // Smoke test: verify all modules can be imported and basic functions work at runtime
 // Run with: npx tsx tests/smoke.ts
 
-import { parseDiff } from '../src/github/diff-parser';
-import { extractReviewableChunks } from '../src/github/chunk-extractor';
-import { buildReviewStats, formatStatsSummary } from '../src/github/stats-builder';
-import { getSystemPrompt, buildReviewPrompt, buildRepairPrompt } from '../src/llm/prompts';
-import { parseLLMResponse, LLMParseError } from '../src/llm/parser';
-import { RepoConfigSchema, DEFAULT_REPO_CONFIG, configToPromptContext } from '../src/types/config.types';
-import { LLMReviewResponseSchema, ReviewIssueSchema, issuesToComments } from '../src/types/review.types';
-import type { ReviewableChunk } from '../src/types/diff.types';
+import { parseDiff } from '../src/github/diff-parser.js';
+import { extractReviewableChunks } from '../src/github/chunk-extractor.js';
+import { buildReviewStats, formatStatsSummary } from '../src/github/stats-builder.js';
+import { getSystemPrompt, buildReviewPrompt, buildRepairPrompt } from '../src/llm/prompts.js';
+import { parseLLMResponse, LLMParseError } from '../src/llm/parser.js';
+import { RepoConfigSchema, DEFAULT_REPO_CONFIG, configToPromptContext } from '../src/types/config.types.js';
+import { LLMReviewResponseSchema, ReviewIssueSchema, issuesToComments } from '../src/types/review.types.js';
+import type { ReviewableChunk } from '../src/types/diff.types.js';
 
 let passed = 0;
 let failed = 0;

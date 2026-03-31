@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { prisma } from '../../db/client';
-import { getReviewQueue } from '../../queue/review.queue';
+import { prisma } from '../../db/client.js';
+import { getReviewQueue } from '../../queue/review.queue.js';
 
 export async function healthCheck(_req: Request, res: Response): Promise<void> {
     const checks: Record<string, boolean> = {};

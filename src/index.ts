@@ -1,14 +1,14 @@
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import { env } from './config/env';
-import { logger } from './config/logger';
-import { router } from './api/router';
-import { webhookMiddleware } from './github/webhooks';
-import { startReviewWorker, stopReviewWorker } from './queue/review.worker';
-import { closeReviewQueue } from './queue/review.queue';
-import { closeRedis } from './config/redis';
-import { prisma } from './db/client';
+import { env } from './config/env.js';
+import { logger } from './config/logger.js';
+import { router } from './api/router.js';
+import { webhookMiddleware } from './github/webhooks.js';
+import { startReviewWorker, stopReviewWorker } from './queue/review.worker.js';
+import { closeReviewQueue } from './queue/review.queue.js';
+import { closeRedis } from './config/redis.js';
+import { prisma } from './db/client.js';
 
 function main() {
     const app = express();

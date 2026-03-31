@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { feedbackRepo } from '../../db/repositories/feedback.repo';
+import { feedbackRepo } from '../../db/repositories/feedback.repo.js';
 import type { Vote } from '@prisma/client';
 
 /**

@@ -1,10 +1,10 @@
 import { Webhooks, createNodeMiddleware } from '@octokit/webhooks';
 import type { RequestHandler } from 'express';
-import { enqueueReviewJob } from '../queue/review.queue';
-import { installationRepo } from '../db/repositories/installation.repo';
-import { repositoryRepo } from '../db/repositories/repository.repo';
-import { env } from '../config/env';
-import { logger } from '../config/logger';
+import { enqueueReviewJob } from '../queue/review.queue.js';
+import { installationRepo } from '../db/repositories/installation.repo.js';
+import { repositoryRepo } from '../db/repositories/repository.repo.js';
+import { env } from '../config/env.js';
+import { logger } from '../config/logger.js';
 import type { AccountType } from '@prisma/client';
 
 // ─── Webhooks instance ──────────────────────────────────────────────────

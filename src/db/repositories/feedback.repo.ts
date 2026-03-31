@@ -1,4 +1,4 @@
-import { prisma } from '../client';
+import { prisma } from '../client.js';
 import type { Feedback, Vote } from '@prisma/client';
 
 export class FeedbackRepo {

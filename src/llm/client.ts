@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
-import { env } from '../config/env';
-import { logger } from '../config/logger';
-import { LLMReviewResponseSchema, type LLMReviewResponse } from '../types/review.types';
+import { env } from '../config/env.js';
+import { logger } from '../config/logger.js';
+import { LLMReviewResponseSchema, type LLMReviewResponse } from '../types/review.types.js';
 
 // ─── Client singleton ───────────────────────────────────────────────────
 

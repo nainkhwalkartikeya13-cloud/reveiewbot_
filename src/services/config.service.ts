@@ -5,9 +5,9 @@ import {
     DEFAULT_REPO_CONFIG,
     configToPromptContext,
     type RepoConfig,
-} from '../types/config.types';
-import { repositoryRepo } from '../db/repositories/repository.repo';
-import { logger } from '../config/logger';
+} from '../types/config.types.js';
+import { repositoryRepo } from '../db/repositories/repository.repo.js';
+import { logger } from '../config/logger.js';
 
 // ─── Config file locations (checked in order) ───────────────────────────
 

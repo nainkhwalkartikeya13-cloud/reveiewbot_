@@ -1,11 +1,11 @@
-import { logger } from '../config/logger';
+import { logger } from '../config/logger.js';
 import type {
     DiffLine,
     DiffHunk,
     DiffFile,
     ParsedDiff,
     FileStatus,
-} from '../types/diff.types';
+} from '../types/diff.types.js';
 
 // ─── Language detection ─────────────────────────────────────────────────
 

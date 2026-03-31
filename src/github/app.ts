@@ -1,8 +1,8 @@
 import { App as OctokitApp } from '@octokit/app';
 import { createAppAuth } from '@octokit/auth-app';
 import { Octokit } from '@octokit/rest';
-import { env } from '../config/env';
-import { logger } from '../config/logger';
+import { env } from '../config/env.js';
+import { logger } from '../config/logger.js';
 
 // ─── App singleton ──────────────────────────────────────────────────────
 

@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
-import { env } from '../config/env';
-// import { logger } from '../config/logger';
+import { env } from '../config/env.js';
+// import { logger } from '../config/logger.js';
 
 const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient | undefined;

@@ -1,6 +1,6 @@
-import { prisma } from '../client';
+import { prisma } from '../client.js';
 import type { Review, ReviewComment, ReviewStatus, ReviewVerdict } from '@prisma/client';
-import type { ReviewIssue, IssueSeverity, Verdict } from '../../types/review.types';
+import type { ReviewIssue, IssueSeverity, Verdict } from '../../types/review.types.js';
 
 // ─── Enum mappers ───────────────────────────────────────────────────────
 

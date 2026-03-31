@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { reviewRepo } from '../../db/repositories/review.repo';
+import { reviewRepo } from '../../db/repositories/review.repo.js';
 
 /**
  * GET /api/reviews — List reviews for a repository.

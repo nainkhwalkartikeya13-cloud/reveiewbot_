@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
-import { logger } from '../config/logger';
-import type { DiffFile, FileContext, ContextSection } from '../types/diff.types';
+import { logger } from '../config/logger.js';
+import type { DiffFile, FileContext, ContextSection } from '../types/diff.types.js';
 
 // ─── Constants ──────────────────────────────────────────────────────────
 

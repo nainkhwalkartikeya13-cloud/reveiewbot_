@@ -1,11 +1,11 @@
 // This module is now superseded by the parsing logic built into client.ts.
 // Re-export for backward compatibility with existing imports.
 
-export { LLMParseError } from './client';
+export { LLMParseError } from './client.js';
 
-import { LLMReviewResponseSchema, type LLMReviewResponse } from '../types/review.types';
-import { logger } from '../config/logger';
-import { LLMParseError } from './client';
+import { LLMReviewResponseSchema, type LLMReviewResponse } from '../types/review.types.js';
+import { logger } from '../config/logger.js';
+import { LLMParseError } from './client.js';
 
 /**
  * Standalone parser for use outside the callClaude flow.
