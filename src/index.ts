@@ -5,6 +5,7 @@ import { env } from './config/env.js';
 import { logger } from './config/logger.js';
 import { router } from './api/router.js';
 import { webhookMiddleware } from './github/webhooks.js';
+import { gitlabWebhookRouter } from './gitlab/webhooks.js';
 import { startReviewWorker, stopReviewWorker } from './queue/review.worker.js';
 import { closeReviewQueue } from './queue/review.queue.js';
 import { closeRedis } from './config/redis.js';
@@ -32,6 +33,10 @@ function main() {
 
     // ─── REST API routes ──────────────────────────────────────────────
     app.use(router);
+
+    // ─── GitLab webhook endpoint ──────────────────────────────────────
+    // Uses standard JSON body (no HMAC), so it's mounted after express.json()
+    app.use('/api/gitlab/webhooks', gitlabWebhookRouter);
 
     // ─── Start the background review worker ───────────────────────────
     startReviewWorker();

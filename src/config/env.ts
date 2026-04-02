@@ -44,6 +44,11 @@ const envSchema = z.object({
     // Optional
     API_KEY: z.string().min(1).optional(),
     SENTRY_DSN: z.string().url().optional(),
+
+    // GitLab (optional — only needed for GitLab integration)
+    GITLAB_WEBHOOK_SECRET: z.string().min(1).optional(),
+    GITLAB_ACCESS_TOKEN: z.string().min(1).optional(),
+    GITLAB_BASE_URL: z.string().url().default('https://gitlab.com'),
 });
 
 export type Env = z.infer<typeof envSchema>;

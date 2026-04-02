@@ -133,6 +133,8 @@ export interface ReviewJobData {
     sender: string;
     action: string;
     language: string | null;
+    /** Which platform this review is for. Defaults to 'github'. */
+    platform?: 'github' | 'gitlab';
 }
 
 // ─── Severity Badge Mapping ─────────────────────────────────────────────
