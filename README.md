@@ -32,8 +32,33 @@ Instead of waiting hours for a human to review code, AXD instantly parses the `g
 | 🛡️ **Deduplication** | Ignores duplicate commits to prevent webhook spam |
 | 🔌 **Multi-Platform** | Supports both GitHub (App) and GitLab (Webhook) |
 | ⚙️ **Repo Config** | Per-repo `.axdreview.yml` for custom rules, ignore paths, and focus areas |
+| 🎬 **GitHub Action** | Use as a CI action — 3 lines of YAML, no App installation needed |
 
 ---
+
+## ⚡ Quick Start (GitHub Action)
+
+Add to `.github/workflows/axd-review.yml` and you're done:
+
+```yaml
+name: AXD Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: KartikeyaNainkhwal/reviewbot@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+```
+
+> **That's it.** Every PR will get an AI review with inline suggestions you can apply with one click.
 
 ## 🏗️ Architecture
 
@@ -245,6 +270,63 @@ Open `http://localhost:3001` to see:
 - **Stats cards**: PRs reviewed, bugs caught, critical issues, repos connected
 - **Activity chart**: 14-day review histogram
 - **Recent reviews table**: Latest reviews with verdict badges
+
+---
+
+## 🎬 GitHub Action (Detailed)
+
+### All Inputs
+
+| Input | Required | Default | Description |
+|---|---|---|---|
+| `github-token` | ✅ | — | GitHub token for API access |
+| `anthropic-api-key` | ✅ | — | Anthropic API key for Claude |
+| `model` | ❌ | `claude-sonnet-4-20250514` | Claude model to use |
+| `severity-threshold` | ❌ | `medium` | Minimum severity: `critical`, `high`, `medium`, `low` |
+| `ignore-paths` | ❌ | `*.lock,dist/**` | Comma-separated glob patterns to ignore |
+| `fail-on-critical` | ❌ | `true` | Exit 1 if critical issues found (blocks merge) |
+| `max-files` | ❌ | `30` | Maximum files to review |
+| `custom-rules` | ❌ | — | Comma-separated review rules |
+
+### Outputs
+
+| Output | Description |
+|---|---|
+| `verdict` | `approve`, `request_changes`, or `comment` |
+| `issue-count` | Total issues found |
+| `critical-count` | Critical severity issues |
+| `high-count` | High severity issues |
+
+### Advanced Usage
+
+```yaml
+- uses: KartikeyaNainkhwal/reviewbot@v1
+  id: review
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+    severity-threshold: 'high'
+    ignore-paths: '*.lock,dist/**,docs/**'
+    fail-on-critical: 'true'
+    custom-rules: 'Check for SQL injection,Ensure error handling'
+
+- name: Check verdict
+  run: |
+    echo "Verdict: ${{ steps.review.outputs.verdict }}"
+    echo "Issues: ${{ steps.review.outputs.issue-count }}"
+    echo "Critical: ${{ steps.review.outputs.critical-count }}"
+```
+
+### Block Merge on Critical Issues
+
+With `fail-on-critical: 'true'` (default), the action exits with code 1 when critical issues are found. Add it as a **required status check** in your branch protection rules to block merges.
+
+### Building the Action Bundle
+
+```bash
+npm run build:action    # Bundles src/action.ts → dist/action.js (single file)
+npm run release         # Build + commit + tag v1
+```
 
 ---
 

@@ -19,7 +19,9 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
     "docker:dev": "docker compose -f docker/docker-compose.yml up -d",
-    "docker:down": "docker compose -f docker/docker-compose.yml down"
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "build:action": "node scripts/build-action.mjs",
+    "release": "npm run build:action && git add dist/action.js && git commit -m 'chore: build action bundle' && git tag -a v1 -m 'v1' --force && git push origin v1 --force"
   },
   "keywords": [
     "github",
@@ -34,6 +36,9 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@actions/core": "^3.0.0",
+    "@actions/github": "^9.0.0",
+    "@anthropic-ai/sdk": "^0.82.0",
     "@octokit/app": "^16.1.2",
     "@octokit/auth-app": "^8.2.0",
     "@octokit/rest": "^22.0.1",
@@ -46,6 +51,7 @@
     "bullmq": "^5.71.1",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
+    "esbuild": "^0.27.5",
     "express": "^5.2.1",
     "express-rate-limit": "^8.3.2",
     "groq-sdk": "^1.1.2",

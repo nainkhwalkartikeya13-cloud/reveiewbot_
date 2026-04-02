@@ -1,0 +1,53 @@
+name: 'AXD Review Bot'
+description: 'AI-powered PR code review using Claude. Get instant, actionable feedback on every pull request with one-click fix suggestions.'
+author: 'Kartikeya Nainkhwal'
+
+branding:
+  icon: 'eye'
+  color: 'purple'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access (usually secrets.GITHUB_TOKEN)'
+    required: true
+  anthropic-api-key:
+    description: 'Anthropic API key for Claude (secrets.ANTHROPIC_API_KEY)'
+    required: true
+  model:
+    description: 'Claude model to use'
+    required: false
+    default: 'claude-sonnet-4-20250514'
+  severity-threshold:
+    description: 'Minimum severity to report: critical, high, medium, low'
+    required: false
+    default: 'medium'
+  ignore-paths:
+    description: 'Comma-separated glob patterns to ignore (e.g. "*.lock,dist/**")'
+    required: false
+    default: '*.lock,dist/**,*.generated.ts'
+  fail-on-critical:
+    description: 'Fail the action (exit 1) if critical issues are found'
+    required: false
+    default: 'true'
+  max-files:
+    description: 'Maximum number of files to review'
+    required: false
+    default: '30'
+  custom-rules:
+    description: 'Comma-separated custom review rules'
+    required: false
+    default: ''
+
+outputs:
+  verdict:
+    description: 'Review verdict: approve, request_changes, or comment'
+  issue-count:
+    description: 'Total number of issues found'
+  critical-count:
+    description: 'Number of critical severity issues'
+  high-count:
+    description: 'Number of high severity issues'
+
+runs:
+  using: 'node20'
+  main: 'dist/action.js'
