@@ -14,6 +14,7 @@ interface Stats {
   approvalRate: number;
   totalPromptTokens: number;
   totalCompletionTokens: number;
+  totalEstimatedCost: number;
   activity: { date: string; reviews: number }[];
 }
 
@@ -245,7 +246,7 @@ export default function Dashboard() {
                   label="Repos Connected"
                   value={stats.connectedRepos}
                   icon="📦"
-                  subtext={`${formatNumber(stats.totalPromptTokens + stats.totalCompletionTokens)} tokens used`}
+                  subtext={`${formatNumber(stats.totalPromptTokens + stats.totalCompletionTokens)} tokens • $${stats.totalEstimatedCost.toFixed(2)}`}
                   delay={240}
                 />
               </>
@@ -345,8 +346,8 @@ export default function Dashboard() {
                       <td className="px-4 py-4 text-center">
                         <span
                           className={`font-semibold text-sm ${r.issueCount > 0
-                              ? "text-foreground"
-                              : "text-foreground-dim"
+                            ? "text-foreground"
+                            : "text-foreground-dim"
                             }`}
                         >
                           {r.issueCount}
@@ -355,8 +356,8 @@ export default function Dashboard() {
                       <td className="px-4 py-4 text-center">
                         <span
                           className={`font-semibold text-sm ${r.criticalCount > 0
-                              ? "text-[var(--critical)]"
-                              : "text-foreground-dim"
+                            ? "text-[var(--critical)]"
+                            : "text-foreground-dim"
                             }`}
                         >
                           {r.criticalCount}

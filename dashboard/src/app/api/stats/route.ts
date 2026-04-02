@@ -75,6 +75,12 @@ export async function GET() {
             });
         }
 
+        // Token usage & Cost from UsageRecords
+        const usageAgg = await prisma.usageRecord.aggregate({
+            _sum: { estimatedCostUsd: true },
+        });
+        const totalEstimatedCost = usageAgg._sum.estimatedCostUsd ?? 0;
+
         return NextResponse.json({
             totalReviews,
             totalIssues,
@@ -84,6 +90,7 @@ export async function GET() {
             approvalRate,
             totalPromptTokens: tokenAgg._sum.promptTokens ?? 0,
             totalCompletionTokens: tokenAgg._sum.completionTokens ?? 0,
+            totalEstimatedCost,
             activity,
         });
     } catch (error) {
