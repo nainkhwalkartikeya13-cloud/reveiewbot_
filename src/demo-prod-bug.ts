@@ -1,6 +1,6 @@
 // A demo file to test the production Railway bot!
 
-function authenticateUser(username, password) {
+function authenticateUser(username: string, password: string): boolean {
     let isAuthenticated = false;
 
     // Critical Bug: Assignment instead of strictly equals
