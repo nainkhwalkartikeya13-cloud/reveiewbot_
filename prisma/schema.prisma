@@ -15,7 +15,7 @@ datasource db {
 
 model Installation {
   id             String      @id @default(cuid())
-  githubId       Int         @unique          // GitHub installation ID
+  githubId       Float       @unique          // GitHub installation ID
   accountLogin   String                       // org or user login name
   accountType    AccountType                  // USER or ORG
   accessToken    String?                      // cached installation token
@@ -46,7 +46,7 @@ enum AccountType {
 
 model Repository {
   id             String       @id @default(cuid())
-  githubId       Int          @unique            // GitHub repo ID
+  githubId       Float        @unique            // GitHub repo ID
   fullName       String                          // "owner/repo"
   defaultBranch  String       @default("main")
   isActive       Boolean      @default(true)     // false = uninstalled/disabled
@@ -96,8 +96,8 @@ model Review {
   errorMessage     String?
 
   // GitHub API IDs (for updating/dismissing)
-  githubReviewId      Int?                   // pulls.createReview response id
-  githubCommentId     Int?                   // summary comment id
+  githubReviewId      Float?                   // pulls.createReview response id
+  githubCommentId     Float?                   // summary comment id
 
   createdAt   DateTime  @default(now())
   completedAt DateTime?
@@ -134,7 +134,7 @@ enum ReviewVerdict {
 model ReviewComment {
   id              String         @id @default(cuid())
   reviewId        String
-  githubCommentId Int?           // GitHub's comment thread ID (if posted)
+  githubCommentId Float?           // GitHub's comment thread ID (if posted)
 
   // Location
   path     String                // file path
