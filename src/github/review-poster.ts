@@ -860,7 +860,7 @@ function formatSummaryComment(
     lines.push('');
 
     // ── Header ────────────────────────────────────────────────────────
-    lines.push(`## 🤖 ReviewCode Review Summary`);
+    lines.push(`## 🤖 ReviewCode Summary`);
     lines.push('');
 
     if (metadata) {

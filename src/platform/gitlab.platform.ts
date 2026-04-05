@@ -367,7 +367,7 @@ export class GitLabPlatform implements ReviewPlatform {
             await this.client.post(`/projects/${projectId}/labels`, {
                 name: labelName,
                 color: colorMap[labelName] ?? '#0075CA',
-                description: `ReviewCode Review Bot label`,
+                description: `ReviewCode label`,
             });
         } catch (error) {
             const err = error as { response?: { status?: number } };

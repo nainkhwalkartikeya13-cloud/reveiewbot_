@@ -40,7 +40,7 @@ export function generateSummaryMarkdown(
     const sha = commitSha ? `\`${commitSha.slice(0, 7)}\`` : '';
     const timestamp = new Date().toUTCString();
 
-    lines.push('## 🤖 ReviewCode Review Summary');
+    lines.push('## 🤖 ReviewCode Summary');
     lines.push('');
     lines.push(`> ${verdict} · Reviewed commit ${sha} · ${timestamp}`);
     lines.push('');

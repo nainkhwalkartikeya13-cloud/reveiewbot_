@@ -199,7 +199,7 @@ export default function Dashboard() {
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-3">
                 <span className="text-4xl">🤖</span>
-                ReviewCode Review Bot
+                ReviewCode
               </h1>
               <p className="text-foreground-dim text-sm mt-1">
                 AI-powered code review intelligence
@@ -430,7 +430,7 @@ export default function Dashboard() {
       {/* ── Footer ─────────────────────────────────────────────────── */}
       <footer className="border-t border-border mt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between text-foreground-dim text-xs">
-          <span>🤖 ReviewCode Review Bot · AI-powered code review</span>
+          <span>🤖 ReviewCode · AI-powered code review</span>
           <span>Auto-refreshes every 30s</span>
         </div>
       </footer>

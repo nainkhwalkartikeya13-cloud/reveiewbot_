@@ -109,7 +109,7 @@ function estimateComplexity(
 export function formatStatsSummary(stats: PRReviewStats): string {
     const lines: string[] = [];
 
-    lines.push('## 🤖 ReviewCode Review Summary\n');
+    lines.push('## 🤖 ReviewCode Summary\n');
 
     // Complexity badge
     const badges: Record<PRReviewStats['complexityEstimate'], string> = {

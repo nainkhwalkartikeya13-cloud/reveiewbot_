@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ReviewCode Review Bot — Dashboard",
+  title: "ReviewCode — Dashboard",
   description:
     "Monitor your AI-powered code review bot. Track reviews, issues, and team performance.",
   icons: { icon: "/favicon.ico" },

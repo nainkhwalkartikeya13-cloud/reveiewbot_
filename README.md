@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🤖 ReviewCode Review Bot</h1>
+  <h1>🤖 ReviewCode</h1>
   <p><b>An intelligent, automated AI-powered Code Reviewer for GitHub Pull Requests & GitLab Merge Requests.</b></p>
 
   [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)

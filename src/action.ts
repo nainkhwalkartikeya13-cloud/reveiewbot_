@@ -3,7 +3,7 @@ import * as github from '@actions/github';
 import Anthropic from '@anthropic-ai/sdk';
 
 // ═══════════════════════════════════════════════════════════════════════
-// ReviewCode Review Bot — GitHub Action Entry Point
+// ReviewCode — GitHub Action Entry Point
 // ═══════════════════════════════════════════════════════════════════════
 //
 // Self-contained action that reviews PRs using Claude.
@@ -227,7 +227,7 @@ function generateSummaryMarkdown(
         comment: '💬 **Reviewed**',
     };
 
-    lines.push('## 🤖 ReviewCode Review Summary');
+    lines.push('## 🤖 ReviewCode Summary');
     lines.push('');
     lines.push(`> ${verdictMap[result.overallVerdict]} · Reviewed commit \`${commitSha.slice(0, 7)}\` · ${new Date().toUTCString()}`);
     lines.push('');
@@ -293,7 +293,7 @@ function generateSummaryMarkdown(
     lines.push('');
 
     lines.push('---');
-    lines.push('> 🤖 ReviewCode Review Bot · [GitHub Action](https://github.com/KartikeyaNainkhwal/reviewbot)');
+    lines.push('> 🤖 ReviewCode · [GitHub Action](https://github.com/KartikeyaNainkhwal/reviewbot)');
 
     return lines.join('\n');
 }
