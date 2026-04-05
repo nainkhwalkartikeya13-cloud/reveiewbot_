@@ -1,0 +1,224 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// 1. GitHub App Installation
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Tracks every organization/user that installs the GitHub App.
+// One installation can have many repositories.
+
+model Installation {
+  id             String      @id @default(cuid())
+  githubId       Float       @unique          // GitHub installation ID
+  accountLogin   String                       // org or user login name
+  accountType    AccountType                  // USER or ORG
+  accessToken    String?                      // cached installation token
+  tokenExpiresAt DateTime?                    // token expiry
+  suspendedAt    DateTime?                    // null = active
+  plan           String      @default("free") // free | pro | enterprise
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  repositories Repository[]
+  usageRecords UsageRecord[]
+
+  @@index([githubId])
+  @@index([accountLogin])
+}
+
+enum AccountType {
+  USER
+  ORGANIZATION
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// 2. Tracked Repository
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Each repo under an installation. The `config` JSON field holds the
+// dashboard-set overrides (merged with .prbot.yml from the repo).
+
+model Repository {
+  id             String       @id @default(cuid())
+  githubId       Float        @unique            // GitHub repo ID
+  fullName       String                          // "owner/repo"
+  defaultBranch  String       @default("main")
+  isActive       Boolean      @default(true)     // false = uninstalled/disabled
+  language       String?                         // primary language
+  config         Json         @default("{}")     // RepoConfig overrides (dashboard)
+  configSyncedAt DateTime?                       // last .prbot.yml sync
+  installationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  installation Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
+  reviews      Review[]
+
+  @@index([fullName])
+  @@index([installationId])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// 3. Review Run
+// ═══════════════════════════════════════════════════════════════════════
+//
+// One record per review execution (per PR push).
+// Tracks the full lifecycle: PENDING → IN_PROGRESS → COMPLETED/FAILED.
+
+model Review {
+  id               String       @id @default(cuid())
+  repositoryId     String
+  prNumber         Int
+  headSha          String                     // commit SHA reviewed
+  baseSha          String
+  status           ReviewStatus @default(PENDING)
+  verdict          ReviewVerdict?             // approve/request_changes/comment
+  triggerAction    String                     // opened/synchronize/reopened
+  triggeredBy      String                     // GitHub username
+
+  // Metrics
+  filesReviewed    Int     @default(0)
+  commentsPosted   Int     @default(0)
+  issuesBySeverity Json    @default("{}")     // { critical: 0, high: 1, medium: 2, low: 0 }
+  promptTokens     Int     @default(0)
+  completionTokens Int     @default(0)
+  durationMs       Int     @default(0)
+  llmModel         String  @default("claude-sonnet-4-6")
+
+  // Content
+  summary          String?
+  errorMessage     String?
+
+  // GitHub API IDs (for updating/dismissing)
+  githubReviewId      Float?                   // pulls.createReview response id
+  githubCommentId     Float?                   // summary comment id
+
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  repository Repository      @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  comments   ReviewComment[]
+
+  @@index([repositoryId, prNumber])
+  @@index([repositoryId, createdAt])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum ReviewStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  SKIPPED
+}
+
+enum ReviewVerdict {
+  APPROVE
+  REQUEST_CHANGES
+  COMMENT
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// 4. Individual Review Comment / Issue
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Each issue the LLM found. Maps to an inline comment on the PR.
+
+model ReviewComment {
+  id              String         @id @default(cuid())
+  reviewId        String
+  githubCommentId Float?           // GitHub's comment thread ID (if posted)
+
+  // Location
+  path     String                // file path
+  line     Int                   // line number in new file
+  side     String   @default("RIGHT")
+
+  // Issue classification
+  severity IssueSeverity
+  type     IssueType
+  title    String                // short title (from LLM)
+  body     String                // full description + suggestion
+
+  // Optional code suggestion
+  suggestion  String?            // the fix
+  codeSnippet String?            // suggested replacement code
+
+  createdAt DateTime @default(now())
+
+  review    Review     @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  feedbacks Feedback[]
+
+  @@index([reviewId])
+  @@index([path])
+}
+
+enum IssueSeverity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum IssueType {
+  BUG
+  SECURITY
+  PERFORMANCE
+  LOGIC
+  STYLE
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// 5. User Feedback on Comments
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Tracks thumbs up/down on each comment for future training data.
+// One vote per user per comment (upsert).
+
+model Feedback {
+  id             String @id @default(cuid())
+  commentId      String
+  githubUsername  String                      // who voted
+  vote           Vote                         // HELPFUL or NOT_HELPFUL
+  reason         String?                      // optional explanation
+  createdAt      DateTime @default(now())
+
+  comment ReviewComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, githubUsername])       // one vote per user per comment
+  @@index([commentId])
+  @@index([githubUsername])
+}
+
+enum Vote {
+  HELPFUL
+  NOT_HELPFUL
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// 6. API Usage Tracking
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Daily aggregated usage per installation (for billing and rate limits).
+
+model UsageRecord {
+  id                    String @id @default(cuid())
+  installationId        String
+  date                  DateTime @db.Date          // aggregated by day
+  reviewCount           Int      @default(0)
+  totalPromptTokens     Int      @default(0)
+  totalCompletionTokens Int      @default(0)
+  estimatedCostUsd      Float    @default(0)
+
+  installation Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
+
+  @@unique([installationId, date])
+  @@index([installationId, date])
+}
