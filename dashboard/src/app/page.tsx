@@ -155,19 +155,30 @@ export default function Dashboard() {
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState<string | null>(null);
+
   const fetchData = useCallback(async () => {
     try {
       const [statsRes, reviewsRes] = await Promise.all([
         fetch("/api/stats"),
         fetch("/api/reviews"),
       ]);
+
+      if (statsRes.status === 401 || reviewsRes.status === 401) {
+        setError("Please sign in with GitHub to view your repositories.");
+        setLoading(false);
+        return;
+      }
+
       const statsData = await statsRes.json();
       const reviewsData = await reviewsRes.json();
       setStats(statsData);
       setReviews(reviewsData);
       setLastRefresh(new Date());
+      setError(null);
     } catch (err) {
       console.error("Failed to fetch dashboard data:", err);
+      setError("Failed to fetch data.");
     } finally {
       setLoading(false);
     }
@@ -209,187 +220,197 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* ── Stats Cards ──────────────────────────────────────────── */}
-        <section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {loading ? (
-              <>
-                <StatSkeleton />
-                <StatSkeleton />
-                <StatSkeleton />
-                <StatSkeleton />
-              </>
-            ) : stats ? (
-              <>
-                <StatCard
-                  label="PRs Reviewed"
-                  value={stats.totalReviews}
-                  icon="📋"
-                  subtext={`${stats.approvalRate}% approval rate`}
-                  delay={0}
-                />
-                <StatCard
-                  label="Bugs Caught"
-                  value={stats.totalIssues}
-                  icon="🐛"
-                  subtext={`${stats.highCount} high severity`}
-                  delay={80}
-                />
-                <StatCard
-                  label="Critical Issues"
-                  value={stats.criticalCount}
-                  icon="🔴"
-                  subtext="Requires immediate attention"
-                  delay={160}
-                />
-                <StatCard
-                  label="Repos Connected"
-                  value={stats.connectedRepos}
-                  icon="📦"
-                  subtext={`${formatNumber(stats.totalPromptTokens + stats.totalCompletionTokens)} tokens • $${stats.totalEstimatedCost.toFixed(2)}`}
-                  delay={240}
-                />
-              </>
-            ) : null}
+        {error ? (
+          <div className="glass-card p-16 text-center animate-in">
+            <p className="text-5xl mb-4">🔒</p>
+            <h2 className="text-2xl font-bold text-foreground mb-2">Access Restricted</h2>
+            <p className="text-foreground-dim">{error}</p>
           </div>
-        </section>
+        ) : (
+          <>
+            {/* ── Stats Cards ──────────────────────────────────────────── */}
+            <section>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {loading ? (
+                  <>
+                    <StatSkeleton />
+                    <StatSkeleton />
+                    <StatSkeleton />
+                    <StatSkeleton />
+                  </>
+                ) : stats ? (
+                  <>
+                    <StatCard
+                      label="PRs Reviewed"
+                      value={stats.totalReviews}
+                      icon="📋"
+                      subtext={`${stats.approvalRate}% approval rate`}
+                      delay={0}
+                    />
+                    <StatCard
+                      label="Bugs Caught"
+                      value={stats.totalIssues}
+                      icon="🐛"
+                      subtext={`${stats.highCount} high severity`}
+                      delay={80}
+                    />
+                    <StatCard
+                      label="Critical Issues"
+                      value={stats.criticalCount}
+                      icon="🔴"
+                      subtext="Requires immediate attention"
+                      delay={160}
+                    />
+                    <StatCard
+                      label="Repos Connected"
+                      value={stats.connectedRepos}
+                      icon="📦"
+                      subtext={`${formatNumber(stats.totalPromptTokens + stats.totalCompletionTokens)} tokens • $${stats.totalEstimatedCost.toFixed(2)}`}
+                      delay={240}
+                    />
+                  </>
+                ) : null}
+              </div>
+            </section>
 
-        {/* ── Activity Chart ───────────────────────────────────────── */}
-        <section className="glass-card p-6 animate-in" style={{ animationDelay: "300ms" }}>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">
-                Review Activity
-              </h2>
-              <p className="text-foreground-dim text-sm">
-                PRs reviewed per day — last 14 days
-              </p>
-            </div>
-          </div>
-          {loading ? (
-            <div className="skeleton h-[240px] w-full" />
-          ) : stats?.activity ? (
-            <ActivityChart data={stats.activity} />
-          ) : (
-            <div className="h-[240px] flex items-center justify-center text-foreground-dim">
-              No activity data
-            </div>
-          )}
-        </section>
+            {/* ── Activity Chart ───────────────────────────────────────── */}
+            <section className="glass-card p-6 animate-in" style={{ animationDelay: "300ms" }}>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-lg font-semibold text-foreground">
+                    Review Activity
+                  </h2>
+                  <p className="text-foreground-dim text-sm">
+                    PRs reviewed per day — last 14 days
+                  </p>
+                </div>
+              </div>
+              {loading ? (
+                <div className="skeleton h-[240px] w-full" />
+              ) : stats?.activity ? (
+                <ActivityChart data={stats.activity} />
+              ) : (
+                <div className="h-[240px] flex items-center justify-center text-foreground-dim">
+                  No activity data
+                </div>
+              )}
+            </section>
 
-        {/* ── Recent Reviews Table ─────────────────────────────────── */}
-        <section className="glass-card p-6 animate-in" style={{ animationDelay: "400ms" }}>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">
-                Recent Reviews
-              </h2>
-              <p className="text-foreground-dim text-sm">
-                Latest 20 completed reviews
-              </p>
-            </div>
-            {reviews && (
-              <span className="text-foreground-dim text-sm">
-                {reviews.length} review{reviews.length !== 1 && "s"}
-              </span>
-            )}
-          </div>
+            {/* ── Recent Reviews Table ─────────────────────────────────── */}
+            <section className="glass-card p-6 animate-in" style={{ animationDelay: "400ms" }}>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-lg font-semibold text-foreground">
+                    Recent Reviews
+                  </h2>
+                  <p className="text-foreground-dim text-sm">
+                    Latest 20 completed reviews
+                  </p>
+                </div>
+                {reviews && (
+                  <span className="text-foreground-dim text-sm">
+                    {reviews.length} review{reviews.length !== 1 && "s"}
+                  </span>
+                )}
+              </div>
 
-          {loading ? (
-            <TableSkeleton />
-          ) : reviews && reviews.length > 0 ? (
-            <div className="overflow-x-auto -mx-6">
-              <table className="w-full min-w-[700px]">
-                <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="px-6 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider">
-                      Repository
-                    </th>
-                    <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider">
-                      PR
-                    </th>
-                    <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider">
-                      Verdict
-                    </th>
-                    <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-center">
-                      Issues
-                    </th>
-                    <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-center">
-                      Critical
-                    </th>
-                    <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-right">
-                      Duration
-                    </th>
-                    <th className="px-6 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-right">
-                      When
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {reviews.map((r) => (
-                    <tr key={r.id} className="table-row">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                          <span className="text-accent font-medium text-sm font-mono">
-                            {r.repo}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-4">
-                        <span className="text-foreground-muted font-mono text-sm">
-                          #{r.prNumber}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4">
-                        <VerdictBadge verdict={r.verdict} />
-                      </td>
-                      <td className="px-4 py-4 text-center">
-                        <span
-                          className={`font-semibold text-sm ${r.issueCount > 0
-                            ? "text-foreground"
-                            : "text-foreground-dim"
-                            }`}
-                        >
-                          {r.issueCount}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 text-center">
-                        <span
-                          className={`font-semibold text-sm ${r.criticalCount > 0
-                            ? "text-[var(--critical)]"
-                            : "text-foreground-dim"
-                            }`}
-                        >
-                          {r.criticalCount}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 text-right">
-                        <span className="text-foreground-dim text-sm font-mono">
-                          {formatDuration(r.durationMs)}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <span className="text-foreground-dim text-sm">
-                          {timeAgo(r.createdAt)}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <p className="text-5xl mb-4">🔍</p>
-              <p className="text-foreground-muted text-lg font-medium">
-                No reviews yet
-              </p>
-              <p className="text-foreground-dim text-sm mt-1">
-                Reviews will appear here once the bot starts reviewing PRs
-              </p>
-            </div>
-          )}
-        </section>
+              {loading ? (
+                <TableSkeleton />
+              ) : reviews && reviews.length > 0 ? (
+                <div className="overflow-x-auto -mx-6">
+                  <table className="w-full min-w-[700px]">
+                    <thead>
+                      <tr className="border-b border-border text-left">
+                        <th className="px-6 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider">
+                          Repository
+                        </th>
+                        <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider">
+                          PR
+                        </th>
+                        <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider">
+                          Verdict
+                        </th>
+                        <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-center">
+                          Issues
+                        </th>
+                        <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-center">
+                          Critical
+                        </th>
+                        <th className="px-4 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-right">
+                          Duration
+                        </th>
+                        <th className="px-6 py-3 text-xs font-semibold text-foreground-dim uppercase tracking-wider text-right">
+                          When
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {reviews.map((r) => (
+                        <tr key={r.id} className="table-row">
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-2">
+                              <span className="text-accent font-medium text-sm font-mono">
+                                {r.repo}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4">
+                            <span className="text-foreground-muted font-mono text-sm">
+                              #{r.prNumber}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4">
+                            <VerdictBadge verdict={r.verdict} />
+                          </td>
+                          <td className="px-4 py-4 text-center">
+                            <span
+                              className={`font-semibold text-sm ${r.issueCount > 0
+                                ? "text-foreground"
+                                : "text-foreground-dim"
+                                }`}
+                            >
+                              {r.issueCount}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 text-center">
+                            <span
+                              className={`font-semibold text-sm ${r.criticalCount > 0
+                                ? "text-[var(--critical)]"
+                                : "text-foreground-dim"
+                                }`}
+                            >
+                              {r.criticalCount}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 text-right">
+                            <span className="text-foreground-dim text-sm font-mono">
+                              {formatDuration(r.durationMs)}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <span className="text-foreground-dim text-sm">
+                              {timeAgo(r.createdAt)}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="text-center py-16">
+                  <p className="text-5xl mb-4">🔍</p>
+                  <p className="text-foreground-muted text-lg font-medium">
+                    No reviews yet
+                  </p>
+                  <p className="text-foreground-dim text-sm mt-1">
+                    Reviews will appear here once the bot starts reviewing PRs
+                  </p>
+                </div>
+              )}
+            </section>
+          </>
+        )}
       </main>
 
       {/* ── Footer ─────────────────────────────────────────────────── */}
