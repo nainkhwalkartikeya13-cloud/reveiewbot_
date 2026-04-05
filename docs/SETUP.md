@@ -12,8 +12,8 @@
 1. Go to [GitHub Developer Settings → GitHub Apps → New GitHub App](https://github.com/settings/apps/new)
 
 2. Fill in:
-   - **GitHub App name**: `AXD Code Review` (or your choice)
-   - **Homepage URL**: `https://github.com/KartikeyaNainkhwal/axd`
+   - **GitHub App name**: `ReviewCode Code Review` (or your choice)
+   - **Homepage URL**: `https://github.com/KartikeyaNainkhwal/reviewcode`
    - **Webhook URL**: Your server URL + `/api/webhooks` (e.g., `https://your-domain.com/api/webhooks`)
      - For local dev, use [smee.io](https://smee.io) or [ngrok](https://ngrok.com) to tunnel
    - **Webhook secret**: Generate a strong secret (e.g., `openssl rand -hex 32`)
@@ -57,7 +57,7 @@ GITHUB_WEBHOOK_SECRET=<your-webhook-secret>
 ANTHROPIC_API_KEY=sk-ant-...
 
 # Leave defaults for local dev
-DATABASE_URL=postgresql://axd:axd_dev@localhost:5432/axd?schema=public
+DATABASE_URL=postgresql://reviewcode:axd_dev@localhost:5432/reviewcode?schema=public
 REDIS_URL=redis://localhost:6379
 ```
 
@@ -95,7 +95,7 @@ npm run dev
 
 You should see:
 ```
-🚀 AXD server started { port: 3000, env: 'development' }
+🚀 ReviewCode server started { port: 3000, env: 'development' }
 Review worker started { concurrency: 3 }
 ```
 
@@ -134,7 +134,7 @@ Use the ngrok HTTPS URL as your app's Webhook URL.
 
 ```bash
 # Build production image
-docker build -f docker/Dockerfile -t axd .
+docker build -f docker/Dockerfile -t reviewcode .
 
 # Or use Docker Compose for full stack
 docker compose -f docker/docker-compose.yml up -d

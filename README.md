@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🤖 AXD Review Bot</h1>
+  <h1>🤖 ReviewCode Review Bot</h1>
   <p><b>An intelligent, automated AI-powered Code Reviewer for GitHub Pull Requests & GitLab Merge Requests.</b></p>
 
   [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -14,9 +14,9 @@
 
 ## 📖 About The Project
 
-**AXD** is an enterprise-grade code review bot that acts as an automated Senior Developer. It supports both **GitHub Pull Requests** and **GitLab Merge Requests**, automatically reviewing code using powerful Large Language Models (LLMs) like Groq and Claude.
+**ReviewCode** is an enterprise-grade code review bot that acts as an automated Senior Developer. It supports both **GitHub Pull Requests** and **GitLab Merge Requests**, automatically reviewing code using powerful Large Language Models (LLMs) like Groq and Claude.
 
-Instead of waiting hours for a human to review code, AXD instantly parses the `git diff`, analyzes the new code for bugs, logic flaws, and security vulnerabilities, and publishes inline comments natively on the platform.
+Instead of waiting hours for a human to review code, ReviewCode instantly parses the `git diff`, analyzes the new code for bugs, logic flaws, and security vulnerabilities, and publishes inline comments natively on the platform.
 
 ### ✨ Key Features
 
@@ -25,23 +25,23 @@ Instead of waiting hours for a human to review code, AXD instantly parses the `g
 | 🧠 **AI-Powered Analysis** | Identifies complex bugs, SQL injections, performance bottlenecks, and logic errors |
 | ⚡ **Diff-Based Reviews** | Targets only newly modified lines, saving tokens and reducing noise |
 | 🔄 **Async Job Queue** | Handles high-volume PR/MR events reliably using BullMQ + Redis |
-| 🏷️ **Auto-Labeling** | Applies severity-based labels (`axd: critical`, `axd: approved`, etc.) |
+| 🏷️ **Auto-Labeling** | Applies severity-based labels (`reviewcode: critical`, `reviewcode: approved`, etc.) |
 | 💡 **One-Click Fixes** | GitHub suggestion syntax for instant code fix application |
-| 🤖 **Slash Commands** | `@axdbot /review` to trigger manual re-reviews, `@axdbot /help` for commands |
+| 🤖 **Slash Commands** | `@reviewcodebot /review` to trigger manual re-reviews, `@reviewcodebot /help` for commands |
 | 📊 **Dashboard** | Next.js dashboard with review stats, activity charts, and recent reviews |
 | 🛡️ **Deduplication** | Ignores duplicate commits to prevent webhook spam |
 | 🔌 **Multi-Platform** | Supports both GitHub (App) and GitLab (Webhook) |
-| ⚙️ **Repo Config** | Per-repo `.axdreview.yml` for custom rules, ignore paths, and focus areas |
+| ⚙️ **Repo Config** | Per-repo `.reviewcodereview.yml` for custom rules, ignore paths, and focus areas |
 | 🎬 **GitHub Action** | Use as a CI action — 3 lines of YAML, no App installation needed |
 
 ---
 
 ## ⚡ Quick Start (GitHub Action)
 
-Add to `.github/workflows/axd-review.yml` and you're done:
+Add to `.github/workflows/reviewcode-review.yml` and you're done:
 
 ```yaml
-name: AXD Code Review
+name: ReviewCode Code Review
 on:
   pull_request:
     types: [opened, synchronize]
@@ -143,7 +143,7 @@ PORT=3000
 NODE_ENV=development
 
 # Database & Queue
-DATABASE_URL="postgresql://axd:axd_pass@localhost:5432/axd?schema=public"
+DATABASE_URL="postgresql://reviewcode:axd_pass@localhost:5432/reviewcode?schema=public"
 REDIS_URL="redis://localhost:6379"
 
 # GitHub App (required for GitHub)
@@ -223,8 +223,8 @@ Comment on any PR to trigger:
 
 | Command | Description |
 |---|---|
-| `@axdbot /review` | Trigger a fresh re-review of the PR |
-| `@axdbot /help` | Show available commands |
+| `@reviewcodebot /review` | Trigger a fresh re-review of the PR |
+| `@reviewcodebot /help` | Show available commands |
 
 Rate limiting: max 3 manual reviews per PR per hour.
 
@@ -232,7 +232,7 @@ Rate limiting: max 3 manual reviews per PR per hour.
 
 ## ⚙️ Per-Repo Configuration
 
-Drop a `.axdreview.yml` in your repo root:
+Drop a `.reviewcodereview.yml` in your repo root:
 
 ```yaml
 ignore_paths:
@@ -336,7 +336,7 @@ npm run release         # Build + commit + tag v1
 npm test
 ```
 
-To test the bot, create a branch with a deliberate bug (SQL injection, infinite loop) and open a Pull Request. AXD will review it within seconds.
+To test the bot, create a branch with a deliberate bug (SQL injection, infinite loop) and open a Pull Request. ReviewCode will review it within seconds.
 
 ---
 

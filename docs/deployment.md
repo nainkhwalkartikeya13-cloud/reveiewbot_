@@ -1,6 +1,6 @@
-# AXD Production Deployment Guide
+# ReviewCode Production Deployment Guide
 
-Deploying AXD requires moving away from local Docker containers for Redis and PostgreSQL to managed cloud services for reliability, scaling, and backups.
+Deploying ReviewCode requires moving away from local Docker containers for Redis and PostgreSQL to managed cloud services for reliability, scaling, and backups.
 
 This guide outlines the quickest path to production using **Railway** (for hosting the app and Redis) and **Supabase** (for PostgreSQL).
 
@@ -65,9 +65,9 @@ GROQ_API_KEY="gsk_..."
 
 Locally, you used `smee.io` to proxy webhooks. In production:
 
-1. Copy your Railway app's public URL (e.g., `https://axd-production.up.railway.app`).
+1. Copy your Railway app's public URL (e.g., `https://reviewcode-production.up.railway.app`).
 2. Go to your **GitHub App Settings** -> **General**.
-3. Update the **Webhook URL** to: `https://axd-production.up.railway.app/api/webhooks`.
+3. Update the **Webhook URL** to: `https://reviewcode-production.up.railway.app/api/webhooks`.
 4. Update the webhook URL in **GitLab** to `.../api/gitlab/webhooks`.
 
 ## 5. Dashboard Deployment (Vercel)

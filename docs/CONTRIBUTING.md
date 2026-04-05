@@ -1,4 +1,4 @@
-# Contributing to AXD
+# Contributing to ReviewCode
 
 Thanks for your interest in contributing! Here's how to get started.
 
