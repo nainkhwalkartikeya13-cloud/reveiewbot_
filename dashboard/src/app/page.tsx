@@ -346,18 +346,32 @@ export default function Dashboard() {
                     </thead>
                     <tbody className="divide-y divide-border">
                       {reviews.map((r) => (
-                        <tr key={r.id} className="table-row">
+                        <tr
+                          key={r.id}
+                          className="table-row group hover:bg-white/[0.03] transition-colors cursor-pointer"
+                          onClick={() => window.open(`https://github.com/${r.repo}/pull/${r.prNumber}`, '_blank')}
+                        >
                           <td className="px-6 py-4">
-                            <div className="flex items-center gap-2">
-                              <span className="text-accent font-medium text-sm font-mono">
+                            <div className="flex items-center justify-between w-full">
+                              <a
+                                href={`https://github.com/${r.repo}`}
+                                target="_blank"
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-accent font-medium text-sm font-mono truncate max-w-[200px]"
+                              >
                                 {r.repo}
-                              </span>
+                              </a>
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            <span className="text-foreground-muted font-mono text-sm">
-                              #{r.prNumber}
-                            </span>
+                            <a
+                              href={`https://github.com/${r.repo}/pull/${r.prNumber}`}
+                              target="_blank"
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-foreground-muted font-mono text-sm group-hover:text-white transition-colors"
+                            >
+                              #{r.prNumber} ↗
+                            </a>
                           </td>
                           <td className="px-4 py-4">
                             <VerdictBadge verdict={r.verdict} />
